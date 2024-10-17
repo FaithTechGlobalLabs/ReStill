@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useColorScheme } from "react-native";
 
@@ -7,6 +7,9 @@ import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
+import { MoodSelector } from "@/components/MoodSelector";
+import { useMood } from "@/contexts/MoodContext";
+import { MOOD_LEVELS } from "@/constants/AppConstants";
 
 interface ArticleCardProps {
   title: string;
@@ -35,8 +38,10 @@ function ArticleCard({ title, imageUri }: ArticleCardProps) {
 }
 
 export default function HomeScreen() {
-  const [mood, setMood] = useState<string>("Grateful");
-  const moodLevels: string[] = ["", "", "Grateful", "", ""];
+  const {
+    state: { mood },
+    handleMoodSelection,
+  } = useMood();
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? "light"];
 
@@ -58,33 +63,18 @@ export default function HomeScreen() {
       </ThemedView>
       <ThemedView
         style={[
-          styles.moodSelector,
+          styles.moodSelectorContainer,
           { backgroundColor: colorScheme === "light" ? "#FFFFFF" : "#2A2A2A" },
         ]}
       >
         <ThemedText style={[styles.label, { color: colors.text }]}>
           How are you feeling today?
         </ThemedText>
-        <ThemedView style={styles.moodLevels}>
-          {moodLevels.map((moodLevel, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => setMood(moodLevel)}
-              style={[
-                styles.moodDot,
-                {
-                  backgroundColor:
-                    moodLevel === mood
-                      ? colors.tint
-                      : colorScheme === "light"
-                      ? "#E0E0E0"
-                      : "#4A4A4A",
-                  borderColor: moodLevel === mood ? colors.tint : "transparent",
-                },
-              ]}
-            />
-          ))}
-        </ThemedView>
+        <MoodSelector
+          moodLevels={MOOD_LEVELS}
+          selectedMood={mood}
+          onSelectMood={handleMoodSelection}
+        />
       </ThemedView>
       <ThemedView
         style={[styles.devotionBox, { backgroundColor: colors.tint }]}
@@ -164,7 +154,7 @@ const styles = StyleSheet.create({
     left: 0,
     position: "absolute",
   },
-  moodSelector: {
+  moodSelectorContainer: {
     padding: 20,
     borderRadius: 15,
     margin: 20,
@@ -181,17 +171,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 15,
-  },
-  moodLevels: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 10,
-  },
-  moodDot: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    borderWidth: 2,
   },
   devotionBox: {
     padding: 20,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useColorScheme } from "react-native";
 
@@ -7,10 +7,15 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
+import { MoodSelector } from "@/components/MoodSelector";
+import { useMood } from "@/contexts/MoodContext";
+import { MOOD_LEVELS } from "@/constants/AppConstants";
 
 export default function MoodScreen() {
-  const [mood, setMood] = useState<string>("Grateful");
-  const moodLevels: string[] = ["", "", "Grateful", "", ""];
+  const {
+    state: { mood, moodHistory },
+    handleMoodSelection,
+  } = useMood();
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? "light"];
 
@@ -37,31 +42,24 @@ export default function MoodScreen() {
             <ThemedText style={styles.prompt}>Hey, how you feeling?</ThemedText>
           </ThemedView>
         </ThemedView>
-        <ThemedView style={styles.moodSelector}>
-          <ThemedView style={styles.moodLevels}>
-            {moodLevels.map((moodLevel, index) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() => setMood(moodLevel)}
-                style={[
-                  styles.moodDot,
-                  {
-                    backgroundColor:
-                      moodLevel === mood
-                        ? colors.tint
-                        : colorScheme === "light"
-                        ? "#E0E0E0"
-                        : "#4A4A4A",
-                    borderColor:
-                      moodLevel === mood ? colors.tint : "transparent",
-                  },
-                ]}
-              />
-            ))}
-          </ThemedView>
+        <MoodSelector
+          moodLevels={MOOD_LEVELS}
+          selectedMood={mood}
+          onSelectMood={handleMoodSelection}
+        />
+        <ThemedView style={styles.moodHistory}>
+          <ThemedText style={[styles.label, { color: colors.text }]}>
+            Your Mood History
+          </ThemedText>
+          {moodHistory.map((entry, index) => (
+            <ThemedText key={index} style={{ color: colors.text }}>
+              {new Date(entry.createdAt).toLocaleDateString()}:{" "}
+              {entry.moodLevel}
+            </ThemedText>
+          ))}
         </ThemedView>
         <TouchableOpacity
-          style={[styles.submitlButton, { backgroundColor: colors.tint }]}
+          style={[styles.submitButton, { backgroundColor: colors.tint }]}
         >
           <ThemedText style={[styles.buttonText, { color: colors.background }]}>
             Check your mood trends
@@ -102,39 +100,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 15,
   },
-  moodSelector: {
-    borderRadius: 15,
-    padding: 20,
-    paddingTop: 30,
-    paddingBottom: 30,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    marginBottom: 20,
-  },
   label: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 15,
   },
-  moodLevels: {
-    backgroundColor: "#FFFFFF",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 10,
-  },
-  moodDot: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    borderWidth: 2,
-  },
-  submitlButton: {
+  submitButton: {
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
@@ -142,5 +113,11 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: "bold",
+  },
+  moodHistory: {
+    padding: 20,
+    margin: 20,
+    borderRadius: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
   },
 });

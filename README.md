@@ -13,31 +13,64 @@ Other 4D cycle badges
 ![Demonstrate](https://badgen.net/badge/stage/demonstrate/green)
 -->
 
-Overview of the project.
+Tech stack:
+
+- Server: [NestJS](https://nestjs.com/)
+- Client: [Expo](https://expo.dev)
+- Database: PostgreSQL
 
 ## 📋 Requirements
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+- [Node.js](https://nodejs.org/en/) 18.0+ or 20.0+ 
+- [Docker Desktop](https://www.docker.com/)
 
 ## 🚀 Getting Started
 
-1. Install dependencies
+These are the instructions for setting up a local development environment.
 
-   ```bash
-   npm install
-   ```
+### Installation
 
-2. Start the app
+1. Clone this repository
 
-   ```bash
-    npx expo start
-   ```
+2. Install the server
 
-In the output, you'll find options to open the app in a
+    ```bash
+    $ cd <PROJECT-ROOT>/restill-server
+    $ npm install
+    ```
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+3. Install the client
+
+    ```bash
+    $ cd <PROJECT-ROOT>/restill-client
+    $ npm install
+    ```
+
+### Running the app
+
+1. Start up the server:
+
+    1. Start up Docker Desktop
+
+    2. Start the database and backend server
+
+        ```bash
+        $ cd <PROJECT-ROOT>/restill-server
+        $ docker compose up --build
+        ```
+
+2. Start up the client:
+
+    ```bash
+    $ cd <PROJECT-ROOT>/restill-server
+    $ npx expo start
+    ```
+
+    In the output, you'll find options to open the app in a
+
+    - [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+    - [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+    - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 
 ## 🗓️ How to Participate
 
