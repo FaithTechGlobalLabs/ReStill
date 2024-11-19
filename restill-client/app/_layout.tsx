@@ -38,6 +38,9 @@ export default function RootLayout() {
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
+          {/* <Stack.Screen name="(moodModals)/moodLogModal" options={{presentation: 'fullScreenModal', headerShown: false}} />
+          <Stack.Screen name="(moodModals)/thankfulModal"  /> */}
+          <Stack.Screen name="(moodModals)" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
         </Stack>
       </MoodProvider>
     </ThemeProvider>
