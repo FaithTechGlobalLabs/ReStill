@@ -1,15 +1,22 @@
-import React from "react";
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
-import { useColorScheme } from "react-native";
+import React from 'react';
+import {
+  Button,
+  Image,
+  StyleSheet,
+  Touchable,
+  TouchableOpacity,
+} from 'react-native';
+import { useColorScheme } from 'react-native';
 
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { Colors } from "@/constants/Colors";
-import { MoodSelector } from "@/components/MoodSelector";
-import { useMood } from "@/contexts/MoodContext";
-import { MOOD_LEVELS } from "@/constants/AppConstants";
+import { HelloWave } from '@/components/HelloWave';
+import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
+import { Colors } from '@/constants/Colors';
+import { MoodSelector } from '@/components/MoodSelector';
+import { useMood } from '@/contexts/MoodContext';
+import { MOOD_LEVELS } from '@/constants/AppConstants';
+import { router } from 'expo-router';
 
 interface ArticleCardProps {
   title: string;
@@ -18,7 +25,7 @@ interface ArticleCardProps {
 
 function ArticleCard({ title, imageUri }: ArticleCardProps) {
   const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme ?? "light"];
+  const colors = Colors[colorScheme ?? 'light'];
 
   return (
     <ThemedView
@@ -43,14 +50,14 @@ export default function HomeScreen() {
     handleMoodSelection,
   } = useMood();
   const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme ?? "light"];
+  const colors = Colors[colorScheme ?? 'light'];
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: "#100022", dark: "#100022" }}
+      headerBackgroundColor={{ light: '#100022', dark: '#100022' }}
       headerImage={
         <Image
-          source={require("@/assets/images/partial-restill-logo.png")}
+          source={require('@/assets/images/partial-restill-logo.png')}
           style={styles.logo}
         />
       }
@@ -64,7 +71,7 @@ export default function HomeScreen() {
       <ThemedView
         style={[
           styles.moodSelectorContainer,
-          { backgroundColor: colorScheme === "light" ? "#FFFFFF" : "#2A2A2A" },
+          { backgroundColor: colorScheme === 'light' ? '#FFFFFF' : '#2A2A2A' },
         ]}
       >
         <ThemedText style={[styles.label, { color: colors.text }]}>
@@ -75,6 +82,22 @@ export default function HomeScreen() {
           selectedMood={mood}
           onSelectMood={handleMoodSelection}
         />
+        <TouchableOpacity
+          style={[
+            styles.moodSelectorContainer,
+            {
+              backgroundColor: colorScheme === 'light' ? '#FFFFFF' : '#2A2A2A',
+            },
+          ]}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              router.navigate('/(moodModals)/moodLogModal');
+            }}
+          >
+            <ThemedText>Open Mood Logger </ThemedText>
+          </TouchableOpacity>
+        </TouchableOpacity>
       </ThemedView>
       <ThemedView
         style={[styles.devotionBox, { backgroundColor: colors.tint }]}
@@ -142,8 +165,8 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
     padding: 20,
   },
@@ -152,13 +175,13 @@ const styles = StyleSheet.create({
     width: 290,
     bottom: 0,
     left: 0,
-    position: "absolute",
+    position: 'absolute',
   },
   moodSelectorContainer: {
     padding: 20,
     borderRadius: 15,
     margin: 20,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -169,25 +192,25 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 15,
   },
   devotionBox: {
     padding: 20,
     margin: 20,
     borderRadius: 10,
-    alignItems: "center",
+    alignItems: 'center',
   },
   devotionText: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   stressManagementButton: {
     padding: 20,
     margin: 20,
     borderRadius: 15,
     borderWidth: 2,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -197,13 +220,13 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   stressManagementContent: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   stressManagementText: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   stressManagementSubText: {
     fontSize: 14,
@@ -213,28 +236,28 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   articlesSection: {
     padding: 20,
   },
   articlesTitle: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 10,
   },
   articleCards: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   articleCard: {
-    width: "48%",
+    width: '48%',
     borderRadius: 10,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   articleImage: {
-    width: "100%",
+    width: '100%',
     height: 100,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
